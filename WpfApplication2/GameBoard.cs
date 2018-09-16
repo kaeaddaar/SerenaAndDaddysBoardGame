@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;     // For using BitmapImage
 using System.Media;                     // For sound player
 using System.Windows;
 using System.Windows.Threading;
+using appGameBoardTest.Components;
 
 namespace appGameBoardTest.Game
 {
@@ -478,7 +479,8 @@ namespace appGameBoardTest.Game
             // YellowMan1 movement keys
             if (e.Key == Key.S)
             {
-                YellowMan1.Movement.Vector.X = 0; YellowMan1.Movement.Vector.Y = -1; YellowMan1.Movement.Vector.Z = 0;  // Sounth
+                //YellowMan1.Movement.Vector.X = 0; YellowMan1.Movement.Vector.Y = -1; YellowMan1.Movement.Vector.Z = 0;  // Sounth
+                YellowMan1.Movement.Vector = Vector3D_Compass.South;
                 Game.Movement.clsMovement.MoveEntity(ref YellowMan1.Movement, ref YellowMan1.Movable, this);
                 SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\smb_jump-small.wav");
                 

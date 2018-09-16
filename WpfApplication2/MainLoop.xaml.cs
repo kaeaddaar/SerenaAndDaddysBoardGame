@@ -49,8 +49,8 @@ namespace appGameBoardTest
                     {
                         foreach (Entities.Player p in GB.dictCustomPlayerGroups["SpaceRocks"])
                         {
-                            Components.Vector3D_Compass Compass = new Components.Vector3D_Compass();
-                            p.Movement.Vector = Compass.North;
+                            //Components.Vector3D_Compass Compass = new Components.Vector3D_Compass();
+                            p.Movement.Vector = Components.Vector3D_Compass.North;
                             Game.Movement.clsMovement.MoveEntity(ref p.Movement, ref p.Movable, GB);
                             //SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\TappingAlong.wav");
                             //simpleSound.Play();

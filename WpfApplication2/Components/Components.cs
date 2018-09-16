@@ -14,12 +14,12 @@ namespace appGameBoardTest.Components
         // Static component methods can go here.
     }
 
-    public class Vector3D_Compass
+    public static class Vector3D_Compass
     {
-        public Vector3D North { get { return new Vector3D(0, 1, 0); } }
-        public Vector3D South { get { return new Vector3D(0, -1, 0); } }
-        public Vector3D East { get { return new Vector3D(1, 0, 0); } }
-        public Vector3D West { get { return new Vector3D(-1, 0, 0); } }
+        public static Vector3D North { get { return new Vector3D(0, 1, 0); } }
+        public static Vector3D South { get { return new Vector3D(0, -1, 0); } }
+        public static Vector3D East { get { return new Vector3D(1, 0, 0); } }
+        public static Vector3D West { get { return new Vector3D(-1, 0, 0); } }
     }
 
     public class Movement
