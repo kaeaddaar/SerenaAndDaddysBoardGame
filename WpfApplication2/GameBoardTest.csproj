@@ -87,10 +87,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Game\MathHelper\MathAssist.cs" />
-    <Compile Include="Game\UserInerface\UserInterface.cs" />
-    <Compile Include="MainLoop.xaml.cs">
-      <DependentUpon>MainLoop.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Resource1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -98,9 +94,6 @@
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Window2.xaml.cs">
-      <DependentUpon>Window2.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -111,18 +104,9 @@
     <Compile Include="Game\Movement\Movement.cs" />
     <Compile Include="Entities\Entities.cs" />
     <Compile Include="Game\Rules\Formulas.cs" />
-    <Compile Include="Game\Rules\Rules.cs" />
     <Compile Include="Game\Tile.cs" />
     <Compile Include="GameBoard.cs" />
-    <Page Include="MainLoop.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Window2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -27,61 +27,6 @@ namespace appGameBoardTest.Game
         }
     }
 
-    public class GameVisuals
-    {
-        public Viewport3D myViewport3D;      // viewport gets tied to MainWindow.Content from MainWindow so needs to be public
-        public PerspectiveCamera myPCamera;
-        public Model3DGroup myModel3DDisplay = new Model3DGroup();     // All other group will go into this group before getting displayed
-        GameVisuals()
-        {
-            // Responsible for visual elements like camera so things can link to or use the visual elements
-            myViewport3D = new Viewport3D();
-            // Defines the camera used to view the 3D object. In order to view the 3D object, 
-            // the camera must be positioned and pointed such that the object is within view  
-            // of the camera.
-            PerspectiveCamera myPCamera = new PerspectiveCamera();
-            myModel3DDisplay = new Model3DGroup();
-        }
-    }
-
-    public class GameLoop
-    {
-        System.Timers.Timer myTimer;
-        private GameBoard GB;
-        public bool TimeToFireEvent;
-
-        public GameLoop()
-        {
-            myTimer = new System.Timers.Timer();
-            TimeToFireEvent = false;
-        }
-
-        public GameLoop(ref GameBoard GBRef)
-        {
-            myTimer = new System.Timers.Timer();
-            TimeToFireEvent = false;
-            GB = GBRef;
-        }
-
-        public void MainLoop()
-        {
-            myTimer.Elapsed += new System.Timers.ElapsedEventHandler( execLoop );
-            myTimer.Interval = 500;
-            myTimer.Start();
-        }
-
-        public void execLoop( object source, System.Timers.ElapsedEventArgs e)
-        {
-            TimeToFireEvent = true;
-        }
-    }
-
-
-    public class GBPieces
-    {
-
-    }
-
     public class GameBoard
         // Purpose: Track map elements and positions of entities
         // Purpose: Tracks the info used to draw the map and decide what Items on the map need to be drawn.
@@ -122,8 +67,8 @@ namespace appGameBoardTest.Game
         Entities.BaseEntity Block;
 
         public UInt32 nextEntityId = 1;        // Public so that move routines work
-        Window2 winInfo = new Window2();
-        public Game.UserInerface.GBInfo GB_Info;
+        //Window2 winInfo = new Window2();
+        //public Game.UserInerface.GBInfo GB_Info;
         public GeometryModel3D GeoMove;
 
         public GameBoard()
@@ -148,9 +93,9 @@ namespace appGameBoardTest.Game
             myViewport3D.Children.Add(myModelVisual3D);
             dictCustomPlayerGroups.Add("SpaceRocks", new List<Entities.Player>());
 
-            GB_Info = new UserInerface.GBInfo(winInfo);
-            setup_info_window();
-            updateGBInfo();
+            //GB_Info = new UserInerface.GBInfo(winInfo);
+            //setup_info_window();
+            //updateGBInfo();
 
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(.5);
@@ -206,36 +151,6 @@ namespace appGameBoardTest.Game
 
             //test for a result in the Viewport3D
             VisualTreeHelper.HitTest(myViewport3D, null, HTResult, pointparams);
-        } //HitTest
-
-
-        public void HitTest_Fuzzle()
-        {
-            Point mouseposition = new Point(YellowMan1.Movement.Location.X, YellowMan1.Movement.Location.Y);
-            Point3D testpoint3D = YellowMan1.Movement.Location;
-            Vector3D testdirection = new Vector3D(RedMan.Movement.Location.X - YellowMan1.Movement.Location.X,
-                RedMan.Movement.Location.Y - YellowMan1.Movement.Location.Y, RedMan.Movement.Location.Z - YellowMan1.Movement.Location.Z);
-
-            PointHitTestParameters pointparams = new PointHitTestParameters(mouseposition);
-
-            RayHitTestParameters rayparams = new RayHitTestParameters(testpoint3D, testdirection);
-            
-            //Test all directions
-            for (int i = -1; i <= 1; i++ )
-            {
-                for (int j = -1; j <= 1; j++)
-                {
-                    for (int k = -1; k <= 1; k++)
-                    {
-                        RayHitTestParameters tmpRayParams = new RayHitTestParameters(testpoint3D, new Vector3D(i,j,k));
-                        //test for a result in the Viewport3D
-                        VisualTreeHelper.HitTest(myViewport3D, null, HTResult, pointparams);
-                    }
-                }
-            }
-
-                //test for a result in the Viewport3D
-                VisualTreeHelper.HitTest(myViewport3D, null, HTResult, pointparams);
         } //HitTest
 
 
@@ -305,47 +220,6 @@ namespace appGameBoardTest.Game
             return HitTestResultBehavior.Continue;
         } //HTResult
 
-
-        public void updateGBInfo()
-        {
-            GB_Info.RedMan_Location = "" + RedMan.Movement.Location;
-            GB_Info.RedMan_Geo_Location = "" + RedMan.Movement.Geometry.Bounds;
-            GB_Info.numTiles = "" + lstTiles.Count;
-
-
-            GB_Info.AppendToEnd = "Append String (Not used yet)";
-            GB_Info.AppendToEnd = "RedMan(Blue) Bounds: " + RedMan.Movement.Geometry.Bounds + System.Environment.NewLine;
-            GB_Info.AppendToEnd = GB_Info.AppendToEnd +"RedMan Location: " + RedMan.Movement.Location;
-
-            GB_Info.AppendToEnd = GB_Info.AppendToEnd + "YellowMan2 Bounds: " + YellowMan2.Movement.Geometry.Bounds + System.Environment.NewLine;
-            GB_Info.AppendToEnd = GB_Info.AppendToEnd + "YellowMan2 Location: " + YellowMan2.Movement.Location + System.Environment.NewLine;
-
-            //Display the vector information for YellowMan2 to Redman
-            Vector3D VSource = new Vector3D(YellowMan2.Movement.Geometry.Bounds.Location.X, YellowMan2.Movement.Geometry.Bounds.Location.Y, YellowMan2.Movement.Geometry.Bounds.Location.Z);
-            Vector3D VTarget = new Vector3D(RedMan.Movement.Geometry.Bounds.Location.X, RedMan.Movement.Geometry.Bounds.Location.Y, RedMan.Movement.Geometry.Bounds.Location.Z);
-            Vector3D zeroBased = new Vector3D();
-            zeroBased = VTarget-VSource;        // Save a step by subtraccting the Target from the Souce to get the vector to the target instead of zero based target
-            Vector3D zeroManual = new Vector3D(VSource.X - VTarget.X, VSource.Y - VTarget.Y, VSource.Z - VTarget.Z);
-            zeroManual.Negate();
-
-            GB_Info.AppendToEnd = GB_Info.AppendToEnd + "Vector Yellowman2 - Vector RedMan: " + zeroBased + System.Environment.NewLine;
-            GB_Info.AppendToEnd = GB_Info.AppendToEnd + "Vector Yellowman2 - Vector RedMan(Manual): " + zeroManual + System.Environment.NewLine;
-
-            GB_Info.updateInfoWindow();
-        } //updateGBInfo
-
-
-        private void setup_info_window()
-        {
-            winInfo.Top = 30;
-            winInfo.Left = 30;
-            winInfo.Height = 930;
-            winInfo.Width = 330;
-            winInfo.Show();
-            winInfo.txt1.Height = 900;
-            winInfo.txt1.Width = 300;
-
-        } //setup_info_window
 
         private void loadEntities()
         {
@@ -472,7 +346,7 @@ namespace appGameBoardTest.Game
             if (e.Key == Key.P)
             {
                 if (inGameMode) { inGameMode = false; } else { inGameMode = true; }
-                this.updateGBInfo();
+                //this.updateGBInfo();
                 if (canSee(this)) { /*MessageBox.Show("YellowMan2 can see RedMan.");*/ }
                 else { MessageBox.Show("YellowMan2 can't see Redman."); }
             }
@@ -552,7 +426,7 @@ namespace appGameBoardTest.Game
                 //myModel3DGroup.Children.Add(appGameBoardTest.clsModels.GetGeo(T.p3D, T.B));
                 myModel3DBoard.Children.Add(addTile.Geo);
             }
-            updateGBInfo();     // This will refresh the update window after the keypress is complete
+            //updateGBInfo();     // This will refresh the update window after the keypress is complete
         } //GBWindow_KeyDown
 
     } //GameBoard

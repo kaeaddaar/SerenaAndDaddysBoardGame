@@ -1,6 +1,6 @@
 ﻿<Window x:Class="appGameBoardTest.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="768" Width="1024" KeyDown="Window_KeyDown" ShowActivated="True" MouseDown="Window_MouseDown" Loaded="Window_Loaded">
+        Title="MainWindow" WindowState="Maximized" Height="768" Width="1024" KeyDown="Window_KeyDown" ShowActivated="True" MouseDown="Window_MouseDown" Loaded="Window_Loaded">
 
 </Window>

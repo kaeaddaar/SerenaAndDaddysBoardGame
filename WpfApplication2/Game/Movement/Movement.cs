@@ -23,11 +23,18 @@ namespace appGameBoardTest.Game.Movement
  
             GeometryModel3D tmpGBGeoMove = GB.GeoMove;
 
-            tmpGBGeoMove = clsModels.GetGeo_98(new Point3D(P_Movement.Location.X + P_Movement.Vector.X, P_Movement.Location.Y + P_Movement.Vector.Y,
-                P_Movement.Location.Z + P_Movement.Vector.Z), Brushes.AntiqueWhite);
+            tmpGBGeoMove = clsModels.GetGeo_98
+            (
+                new Point3D
+                (
+                    P_Movement.Location.X + P_Movement.Vector.X,
+                    P_Movement.Location.Y + P_Movement.Vector.Y,
+                    P_Movement.Location.Z + P_Movement.Vector.Z
+                ),
+                Brushes.AntiqueWhite
+            );
+
             GB.myModelMovement.Children.Add(tmpGBGeoMove);
-            GB.GB_Info.GeoMove_Location = tmpGBGeoMove.Bounds.ToString();
-            GB.updateGBInfo();
 
             // Normal code to perform move below
             Tile tmpTile = null;
@@ -35,8 +42,6 @@ namespace appGameBoardTest.Game.Movement
             {   
                 // Clean up the movement check square
                 GB.myModelMovement.Children.Remove(tmpGBGeoMove);
-                GB.GB_Info.GeoMove_Location = "Null";
-                GB.updateGBInfo();
 
                 return false;
             }     // If inGameMode then don't move to new location if it doesn't have a tile under it
@@ -50,19 +55,13 @@ namespace appGameBoardTest.Game.Movement
             {
                 // Clean up the movement check square
                 GB.myModelMovement.Children.Remove(tmpGBGeoMove);
-                GB.GB_Info.GeoMove_Location = "Null";
-                GB.updateGBInfo();
 
                 return false;
             }
 
             // Clean up the movement check square
             GB.myModelMovement.Children.Remove(tmpGBGeoMove);
-            GB.GB_Info.GeoMove_Location = "Null";
-            GB.updateGBInfo();
-
             P_Movement.doMove();
-            //GB.updateGBInfo();
 
             return true;
         } //PushEntity
@@ -72,8 +71,15 @@ namespace appGameBoardTest.Game.Movement
         {
             if (GB.inGameMode)     // If inGameMode then don't move to new location if it doesn't have a tile under it
             {
-                tmpTile = GB.getTileByPoint(new Point3D(Movement.Location.X + Movement.Vector.X, Movement.Location.Y +
-                    Movement.Vector.Y, Movement.Location.Z + Movement.Vector.Z - .1));
+                tmpTile = GB.getTileByPoint
+                (
+                    new Point3D
+                    (
+                        Movement.Location.X + Movement.Vector.X, 
+                        Movement.Location.Y + Movement.Vector.Y, 
+                        Movement.Location.Z + Movement.Vector.Z - .1
+                    )
+                );
                 if (tmpTile == null) { return false; }    // If tile is null (not found) then exit 
             }
             return true;
@@ -83,20 +89,23 @@ namespace appGameBoardTest.Game.Movement
         public static bool MoveEntity(ref Components.Movement Movement, ref Components.Movable Movable, Game.GameBoard GB)
         {
             // Try to draw a model then sleep for .5 sec
-            GB.GeoMove = clsModels.GetGeo_98(new Point3D(Movement.Location.X + Movement.Vector.X, Movement.Location.Y + Movement.Vector.Y, 
-                Movement.Location.Z + Movement.Vector.Z), Brushes.Black);
+            GB.GeoMove = clsModels.GetGeo_98
+            (
+                new Point3D
+                (
+                    Movement.Location.X + Movement.Vector.X, 
+                    Movement.Location.Y + Movement.Vector.Y, 
+                    Movement.Location.Z + Movement.Vector.Z
+                ), 
+                Brushes.Black
+            );
             GB.myModelMovement.Children.Add(GB.GeoMove);
-            GB.GB_Info.GeoMove_Location = GB.GeoMove.Bounds.ToString();
-            GB.updateGBInfo();
 
             // Normal code to perform move below
             Tile tmpTile = null;
             if (!OnATile(ref tmpTile, ref Movement, ref GB)) // If inGameMode then don't move to new location if it doesn't have a tile under it
             {                     // Clean up the movement check square
                 GB.myModelMovement.Children.Remove(GB.GeoMove);
-                GB.GB_Info.GeoMove_Location = "Null";
-                GB.updateGBInfo();
-
                 return false;
             }     
 
@@ -113,20 +122,13 @@ namespace appGameBoardTest.Game.Movement
                 {
                     // Clean up the movement check square
                     GB.myModelMovement.Children.Remove(GB.GeoMove);
-                    GB.GB_Info.GeoMove_Location = "Null";
-                    GB.updateGBInfo();
-                    
                     return false;
                 }
             }
 
             // Clean up the movement check square
             GB.myModelMovement.Children.Remove(GB.GeoMove);
-            GB.GB_Info.GeoMove_Location = "Null";
-            GB.updateGBInfo();
-
             Movement.doMove();
-            //GB.updateGBInfo();
 
             return true;    // This indicates move was successful
         } //MoveEntity
