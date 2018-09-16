@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;     // For using BitmapImage
 
 using System.Media;                     // For sound player
 using System.Windows;
+using System.Windows.Threading;
 
 namespace appGameBoardTest.Game
 {
@@ -147,13 +148,22 @@ namespace appGameBoardTest.Game
             dictCustomPlayerGroups.Add("SpaceRocks", new List<Entities.Player>());
 
             GB_Info = new UserInerface.GBInfo(winInfo);
-
             setup_info_window();
             updateGBInfo();
 
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(.5);
+            timer.Tick += timer_Tick;
+            timer.Start();
             //if (canSee(this)){MessageBox.Show("YellowMan2 can see RedMan.");}
         } //GameBoard
 
+        void timer_Tick(object sender, EventArgs e)
+        {
+            Entities.Player Piece = YellowMan2;
+            Piece.Movement.Vector.X = 0; Piece.Movement.Vector.Y = 1; Piece.Movement.Vector.Z = 0;  
+            Game.Movement.clsMovement.MoveEntity(ref Piece.Movement, ref Piece.Movable, this);
+        }
 
         public bool canSee(Game.GameBoard GB)
         {
