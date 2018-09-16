@@ -479,8 +479,7 @@ namespace appGameBoardTest.Game
             // YellowMan1 movement keys
             if (e.Key == Key.S)
             {
-                //YellowMan1.Movement.Vector.X = 0; YellowMan1.Movement.Vector.Y = -1; YellowMan1.Movement.Vector.Z = 0;  // Sounth
-                YellowMan1.Movement.Vector = Vector3D_Compass.South;
+                YellowMan1.Movement.Vector = Vector3D_Compass.South; // Soutch
                 Game.Movement.clsMovement.MoveEntity(ref YellowMan1.Movement, ref YellowMan1.Movable, this);
                 SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\smb_jump-small.wav");
                 
@@ -488,21 +487,21 @@ namespace appGameBoardTest.Game
             }
             else if (e.Key == Key.A)
             {
-                YellowMan1.Movement.Vector.X = -1; YellowMan1.Movement.Vector.Y = 0; YellowMan1.Movement.Vector.Z = 0;  // West
+                YellowMan1.Movement.Vector = Vector3D_Compass.West; // West
                 Game.Movement.clsMovement.MoveEntity(ref YellowMan1.Movement, ref YellowMan1.Movable, this);
                 SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\smb_jump-small.wav");
                 simpleSound.Play();
             }
             else if (e.Key == Key.D)
             {
-                YellowMan1.Movement.Vector.X = 1; YellowMan1.Movement.Vector.Y = 0; YellowMan1.Movement.Vector.Z = 0;  // East
+                YellowMan1.Movement.Vector = Vector3D_Compass.East; // East
                 Game.Movement.clsMovement.MoveEntity(ref YellowMan1.Movement, ref YellowMan1.Movable, this);
                 SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\smb_jump-small.wav");
                 simpleSound.Play();
             }
             else if (e.Key == Key.W)
             {
-                YellowMan1.Movement.Vector.X = 0; YellowMan1.Movement.Vector.Y = 1; YellowMan1.Movement.Vector.Z = 0;  // North
+                YellowMan1.Movement.Vector = Vector3D_Compass.North; // North
                 Game.Movement.clsMovement.MoveEntity(ref YellowMan1.Movement, ref YellowMan1.Movable, this);
                 SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\smb_jump-small.wav");
                 simpleSound.Play();
@@ -510,28 +509,28 @@ namespace appGameBoardTest.Game
             // Redman movement keys
             if (e.Key == Key.Down)
             {
-                RedMan.Movement.Vector.X = 0; RedMan.Movement.Vector.Y = -1; RedMan.Movement.Vector.Z = 0;  // Sounth
+                RedMan.Movement.Vector = Vector3D_Compass.South; // Sounth
                 Game.Movement.clsMovement.MoveEntity(ref RedMan.Movement, ref RedMan.Movable, this);
                 SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\TappingAlong.wav");
                 simpleSound.Play();
             }
             else if (e.Key == Key.Left)
             {
-                RedMan.Movement.Vector.X = -1; RedMan.Movement.Vector.Y = 0; RedMan.Movement.Vector.Z = 0;  // West
+                RedMan.Movement.Vector = Vector3D_Compass.West; // West
                 Game.Movement.clsMovement.MoveEntity(ref RedMan.Movement, ref RedMan.Movable, this);
                 SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\TappingAlong.wav");
                 simpleSound.Play();
             }
             else if (e.Key == Key.Right)
             {
-                RedMan.Movement.Vector.X = 1; RedMan.Movement.Vector.Y = 0; RedMan.Movement.Vector.Z = 0;  // East
+                RedMan.Movement.Vector = Vector3D_Compass.East; // East
                 Game.Movement.clsMovement.MoveEntity(ref RedMan.Movement, ref RedMan.Movable, this);
                 SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\TappingAlong.wav");
                 simpleSound.Play();
             }
             else if (e.Key == Key.Up)
             {
-                RedMan.Movement.Vector.X = 0; RedMan.Movement.Vector.Y = 1; RedMan.Movement.Vector.Z = 0;  // North
+                RedMan.Movement.Vector = Vector3D_Compass.North; // North
                 Game.Movement.clsMovement.MoveEntity(ref RedMan.Movement, ref RedMan.Movable, this);
                 SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\TappingAlong.wav");
                 simpleSound.Play();
