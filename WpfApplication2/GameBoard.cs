@@ -69,6 +69,9 @@ namespace appGameBoardTest.Game
         private Stopwatch watch;
         private DispatcherTimer timer;
 
+        // queue to track movement requests
+        Queue<Entities.Player> MovementQueue_ByBlock;
+
         public GameBoard()
         {
             cameraSetup();
@@ -95,25 +98,31 @@ namespace appGameBoardTest.Game
             //setup_info_window();
             //updateGBInfo();
 
+            MovementQueue_ByBlock = new Queue<Entities.Player>();
+
             watch = new Stopwatch();
 
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(.5);
             timer.Tick += timer_Tick;
             timer.Start();
-            //if (canSee(this)){MessageBox.Show("YellowMan2 can see RedMan.");}
-        } //GameBoard
+
+        } //GameBoard constructor
 
         void timer_Tick(object sender, EventArgs e)
         {
+            YellowMan2.Movement.Vector = Vector3D_Compass.North;
+            MovementQueue_ByBlock.Enqueue(YellowMan2);
+            
             timer.RunGameLoop(watch, ProcessMovement);
         }
 
         int ProcessMovement()
         {
-            Entities.Player Piece = YellowMan2;
-            Piece.Movement.Vector.X = 0; Piece.Movement.Vector.Y = 1; Piece.Movement.Vector.Z = 0;
-            Game.Movement.clsMovement.MoveEntity(ref Piece.Movement, ref Piece.Movable, this);
+            foreach (var e in MovementQueue_ByBlock)
+            {
+                Game.Movement.clsMovement.MoveEntity(ref e.Movement, ref e.Movable, this);
+            }
 
             return 0; // pass any int to fit Func<int> signature
         }
@@ -168,29 +177,6 @@ namespace appGameBoardTest.Game
 
                     }
 
-
-                    //// START ----- take item we click on and convert the image to SpaceRockTri ----- START
-                    //ImageBrush B = new ImageBrush();
-                    //B.ImageSource = new BitmapImage(new Uri(@"..\..\Game\Images\Items\SpaceRockTri.jpg", UriKind.Relative));
-
-                    //MeshGeometry3D myMeshGeometry3D = (MeshGeometry3D)hitgeo.Geometry;
-
-                    //PointCollection myTextureCoordinatesCollection = new PointCollection();
-                    //myTextureCoordinatesCollection.Add(new System.Windows.Point(1, 1));
-                    //myTextureCoordinatesCollection.Add(new System.Windows.Point(0, 1));
-                    //myTextureCoordinatesCollection.Add(new System.Windows.Point(0, 0));
-                    //myTextureCoordinatesCollection.Add(new System.Windows.Point(0, 0));
-                    //myTextureCoordinatesCollection.Add(new System.Windows.Point(1, 0));
-                    //myTextureCoordinatesCollection.Add(new System.Windows.Point(1, 1));
-                    //myMeshGeometry3D.TextureCoordinates = myTextureCoordinatesCollection;
-
-                    //DiffuseMaterial myMaterial = new DiffuseMaterial(B);
-                    //hitgeo.Material = myMaterial;
-                    //// END ----- take item we click on and convert the image to SpaceRockTri ----- END
-
-
-                    //UpdateResultInfo(rayMeshResult);
-                    //UpdateMaterial(hitgeo, (side1GeometryModel3D.Material as MaterialGroup));
                 }
             }
 
@@ -329,8 +315,8 @@ namespace appGameBoardTest.Game
             // YellowMan1 movement keys
             if (e.Key == Key.S)
             {
-                YellowMan1.Movement.Vector = Vector3D_Compass.South; // Soutch
-                Game.Movement.clsMovement.MoveEntity(ref YellowMan1.Movement, ref YellowMan1.Movable, this);
+                YellowMan1.Movement.Vector = Vector3D_Compass.South; // South
+                MovementQueue_ByBlock.Enqueue(YellowMan1);
                 SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\smb_jump-small.wav");
                 
                 simpleSound.Play();
@@ -338,21 +324,20 @@ namespace appGameBoardTest.Game
             else if (e.Key == Key.A)
             {
                 YellowMan1.Movement.Vector = Vector3D_Compass.West; // West
-                Game.Movement.clsMovement.MoveEntity(ref YellowMan1.Movement, ref YellowMan1.Movable, this);
+                MovementQueue_ByBlock.Enqueue(YellowMan1);
                 SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\smb_jump-small.wav");
                 simpleSound.Play();
             }
             else if (e.Key == Key.D)
             {
                 YellowMan1.Movement.Vector = Vector3D_Compass.East; // East
-                Game.Movement.clsMovement.MoveEntity(ref YellowMan1.Movement, ref YellowMan1.Movable, this);
-                SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\smb_jump-small.wav");
+                MovementQueue_ByBlock.Enqueue(YellowMan1); SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\smb_jump-small.wav");
                 simpleSound.Play();
             }
             else if (e.Key == Key.W)
             {
                 YellowMan1.Movement.Vector = Vector3D_Compass.North; // North
-                Game.Movement.clsMovement.MoveEntity(ref YellowMan1.Movement, ref YellowMan1.Movable, this);
+                MovementQueue_ByBlock.Enqueue(YellowMan1);
                 SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\smb_jump-small.wav");
                 simpleSound.Play();
             }
@@ -360,28 +345,28 @@ namespace appGameBoardTest.Game
             if (e.Key == Key.Down)
             {
                 RedMan.Movement.Vector = Vector3D_Compass.South; // Sounth
-                Game.Movement.clsMovement.MoveEntity(ref RedMan.Movement, ref RedMan.Movable, this);
+                MovementQueue_ByBlock.Enqueue(RedMan);
                 SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\TappingAlong.wav");
                 simpleSound.Play();
             }
             else if (e.Key == Key.Left)
             {
                 RedMan.Movement.Vector = Vector3D_Compass.West; // West
-                Game.Movement.clsMovement.MoveEntity(ref RedMan.Movement, ref RedMan.Movable, this);
+                MovementQueue_ByBlock.Enqueue(RedMan);
                 SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\TappingAlong.wav");
                 simpleSound.Play();
             }
             else if (e.Key == Key.Right)
             {
                 RedMan.Movement.Vector = Vector3D_Compass.East; // East
-                Game.Movement.clsMovement.MoveEntity(ref RedMan.Movement, ref RedMan.Movable, this);
+                MovementQueue_ByBlock.Enqueue(RedMan);
                 SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\TappingAlong.wav");
                 simpleSound.Play();
             }
             else if (e.Key == Key.Up)
             {
                 RedMan.Movement.Vector = Vector3D_Compass.North; // North
-                Game.Movement.clsMovement.MoveEntity(ref RedMan.Movement, ref RedMan.Movable, this);
+                MovementQueue_ByBlock.Enqueue(RedMan);
                 SoundPlayer simpleSound = new SoundPlayer(Environment.CurrentDirectory + @"\..\..\Game\GameSounds\TappingAlong.wav");
                 simpleSound.Play();
             }
