@@ -68,6 +68,7 @@ namespace appGameBoardTest.Game
         // used in game loop
         private Stopwatch watch;
         private DispatcherTimer timer;
+        private long ticksSinceEnemyMove;
 
         // queue to track movement requests
         Queue<Entities.Player> MovementQueue_ByBlock;
@@ -99,11 +100,12 @@ namespace appGameBoardTest.Game
             //updateGBInfo();
 
             MovementQueue_ByBlock = new Queue<Entities.Player>();
+            ticksSinceEnemyMove = 0;
 
             watch = new Stopwatch();
 
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(.5);
+            timer.Interval = TimeSpan.FromSeconds(.1);
             timer.Tick += timer_Tick;
             timer.Start();
 
@@ -111,10 +113,41 @@ namespace appGameBoardTest.Game
 
         void timer_Tick(object sender, EventArgs e)
         {
-            YellowMan2.Movement.Vector = Vector3D_Compass.North;
-            MovementQueue_ByBlock.Enqueue(YellowMan2);
-            
-            timer.RunGameLoop(watch, ProcessMovement);
+
+            if (ticksSinceEnemyMove > (750 * 1000)) 
+            {
+                Vector3D directionToMario = new Vector3D
+                (
+                    RedMan.Movement.Location.X - YellowMan2.Movement.Location.X,
+                    RedMan.Movement.Location.Y - YellowMan2.Movement.Location.Y,
+                    RedMan.Movement.Location.Z - YellowMan2.Movement.Location.Z
+                );
+                directionToMario.Normalize();
+                Vector3D DirectionToGo = new Vector3D();
+                if (directionToMario.X > 0.5)
+                {
+                    DirectionToGo = Vector3D_Compass.East;
+                }
+                if (directionToMario.X < -0.5)
+                {
+                    DirectionToGo = Vector3D_Compass.West;
+                }
+                if (directionToMario.Y > 0.5)
+                {
+                    DirectionToGo = Vector3D_Compass.North;
+                }
+                if (directionToMario.Y < -0.5)
+                {
+                    DirectionToGo = Vector3D_Compass.South;
+                }
+
+                YellowMan2.Movement.Vector = DirectionToGo;
+                MovementQueue_ByBlock.Enqueue(YellowMan2);
+                ticksSinceEnemyMove = 0; // moved
+            }
+
+            ticksSinceEnemyMove = ticksSinceEnemyMove + timer.RunGameLoop(watch, ProcessMovement);
+
         }
 
         int ProcessMovement()
