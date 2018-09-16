@@ -18,17 +18,17 @@ namespace appGameBoardTest.Extensions
                 watch = new Stopwatch();
             }
 
-            long msPrevLoop = watch.ElapsedMilliseconds;
+            long ticksPrevLoop = watch.ElapsedTicks;
 
             watch.Start();
             int NotUsed = ExecGameLoop();
             watch.Stop();
 
-            long msLoopDuration = watch.ElapsedMilliseconds;
-            timer.Interval = TimeSpan.FromMilliseconds(msLoopDuration);
+            long ticksLoopDuration = watch.ElapsedTicks;
+            timer.Interval = TimeSpan.FromTicks(ticksLoopDuration);
             watch.Reset();
 
-            return msLoopDuration;
+            return ticksLoopDuration;
         }
     }
 }
