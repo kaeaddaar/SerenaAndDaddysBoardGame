@@ -14,18 +14,12 @@ using System.Media;                     // For sound player
 using System.Windows;
 using System.Windows.Threading;
 using appGameBoardTest.Components;
+using System.Threading;
+using System.Diagnostics;
+using appGameBoardTest.Extensions;
 
 namespace appGameBoardTest.Game
 {
-    public class GameBoard_V1a      // Refactoring Gameboard and applying SOLID principles of OOP   
-    {
-        // Responsible for gameboard, responsible to game board design team only
-        Model3DGroup myModel3DBoard;       // Tiles for the board go here
-        GameBoard_V1a()
-        {
-            myModel3DBoard = new Model3DGroup();
-        }
-    }
 
     public class GameBoard
         // Purpose: Track map elements and positions of entities
@@ -71,6 +65,10 @@ namespace appGameBoardTest.Game
         //public Game.UserInerface.GBInfo GB_Info;
         public GeometryModel3D GeoMove;
 
+        // used in game loop
+        private Stopwatch watch;
+        private DispatcherTimer timer;
+
         public GameBoard()
         {
             cameraSetup();
@@ -97,7 +95,9 @@ namespace appGameBoardTest.Game
             //setup_info_window();
             //updateGBInfo();
 
-            DispatcherTimer timer = new DispatcherTimer();
+            watch = new Stopwatch();
+
+            timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(.5);
             timer.Tick += timer_Tick;
             timer.Start();
@@ -106,41 +106,18 @@ namespace appGameBoardTest.Game
 
         void timer_Tick(object sender, EventArgs e)
         {
-            Entities.Player Piece = YellowMan2;
-            Piece.Movement.Vector.X = 0; Piece.Movement.Vector.Y = 1; Piece.Movement.Vector.Z = 0;  
-            Game.Movement.clsMovement.MoveEntity(ref Piece.Movement, ref Piece.Movable, this);
+            timer.RunGameLoop(watch, ProcessMovement);
         }
 
-        public bool canSee(Game.GameBoard GB)
+        int ProcessMovement()
         {
-            Vector3D VSource = new Vector3D(YellowMan2.Movement.Geometry.Bounds.Location.X, YellowMan2.Movement.Geometry.Bounds.Location.Y, YellowMan2.Movement.Geometry.Bounds.Location.Z);
-            Vector3D VTarget = new Vector3D(RedMan.Movement.Geometry.Bounds.Location.X, RedMan.Movement.Geometry.Bounds.Location.Y, RedMan.Movement.Geometry.Bounds.Location.Z);
-            Vector3D zeroBased = new Vector3D();
-            zeroBased = VTarget - VSource;        // Save a step by subtracting the Target from the Souce to get the vector to the target instead of zero based target
+            Entities.Player Piece = YellowMan2;
+            Piece.Movement.Vector.X = 0; Piece.Movement.Vector.Y = 1; Piece.Movement.Vector.Z = 0;
+            Game.Movement.clsMovement.MoveEntity(ref Piece.Movement, ref Piece.Movable, this);
 
-            foreach (Entities.Player tmpPlayer in dictPlayer.Values)
-            { 
-                if (tmpPlayer.EntityID != YellowMan2.EntityID && tmpPlayer.EntityID != RedMan.EntityID)  //Prevent checking against yerself
-                {
-                    //Vector3D tmpV = new Vector3D(YellowMan2.Movement.Geometry.Bounds.Location.X, tmpPlayer.Movement.Geometry.Bounds.Location.Y, 
-                    //    tmpPlayer.Movement.Geometry.Bounds.Location.Z);
-                    Vector3D tmpV = VTarget - VSource;
-                    tmpV.Normalize();
-                    RayHitTestParameters tmpRay = new RayHitTestParameters(YellowMan2.Movement.Geometry.Bounds.Location,tmpV);
-                    List<Point3D> tmpIntersection = new List<Point3D>();
-                    
-                    if (MathHelper.clsMathAssist.HitTestPointsTowards(tmpRay, tmpPlayer.Movement.Geometry.Bounds))
-
-                    if (MathHelper.clsMathAssist.HitTestManual(tmpRay, tmpPlayer.Movement.Geometry.Bounds, ref tmpIntersection,GB))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;   //If you didn't find something in the way then you can see the object
+            return 0; // pass any int to fit Func<int> signature
         }
 
-        
         public void HitTest(object sender, System.Windows.Input.MouseButtonEventArgs args)
         {
             Point mouseposition = args.GetPosition(myViewport3D);
@@ -347,8 +324,7 @@ namespace appGameBoardTest.Game
             {
                 if (inGameMode) { inGameMode = false; } else { inGameMode = true; }
                 //this.updateGBInfo();
-                if (canSee(this)) { /*MessageBox.Show("YellowMan2 can see RedMan.");*/ }
-                else { MessageBox.Show("YellowMan2 can't see Redman."); }
+
             }
             // YellowMan1 movement keys
             if (e.Key == Key.S)

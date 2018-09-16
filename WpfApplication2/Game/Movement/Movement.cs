@@ -88,17 +88,10 @@ namespace appGameBoardTest.Game.Movement
 
         public static bool MoveEntity(ref Components.Movement Movement, ref Components.Movable Movable, Game.GameBoard GB)
         {
-            // Try to draw a model then sleep for .5 sec
-            GB.GeoMove = clsModels.GetGeo_98
-            (
-                new Point3D
-                (
-                    Movement.Location.X + Movement.Vector.X, 
-                    Movement.Location.Y + Movement.Vector.Y, 
-                    Movement.Location.Z + Movement.Vector.Z
-                ), 
-                Brushes.Black
-            );
+            Point3D p = new Point3D(0, 0, 0);
+            p = Vector3D.Add(Movement.Vector, Movement.Location);
+            GB.GeoMove = clsModels.GetGeo_98(p, Brushes.Black);
+
             GB.myModelMovement.Children.Add(GB.GeoMove);
 
             // Normal code to perform move below
