@@ -146,9 +146,10 @@ namespace appGameBoardTest.Game
 
         int ProcessMovement()
         {
-            foreach (var e in MovementQueue_ByBlock)
+
+            foreach (var p in MovementQueue_ByBlock)
             {
-                Game.Movement.clsMovement.MoveEntity(ref e.Movement, ref e.Movable, this);
+                Game.Movement.clsMovement.MoveEntity(ref p.Movement, ref p.Movable, this);
             }
 
             return 0; // pass any int to fit Func<int> signature
