@@ -6,18 +6,13 @@ using System.Threading.Tasks;
 
 using System.Windows.Media.Media3D;     // For using Point3D
 using System.Windows.Media;             // For using Brush
+using System.Diagnostics;
 
 namespace appGameBoardTest.Entities
 {
 
     public class Player : BaseEntity
     {
-        //public UInt32 EntityID;
-        //public String EntityName;
-        //public appGameBoardTest.Game.GameBoard GB;
-
-        //public Components.Movement Movement;
-        //public Components.Movable Movable = new Components.Movable();
 
         public Components.Character_Containers Character_Containers = new Components.Character_Containers();
         public Components.Character_Attributes Character_Attributes = new Components.Character_Attributes();
@@ -48,16 +43,6 @@ namespace appGameBoardTest.Entities
 
         public Player(ref UInt32 nextEntityId, Game.GameBoard GB) : base (ref nextEntityId, GB)
         {
-            //this.EntityID = nextEntityId;
-            //nextEntityId++;
-            //// Movement component
-            //this.Movement.EntityID = this.EntityID;
-            //this.Movement = new Components.Movement(nextEntityId);
-            //GB.dictMovement.Add(this.EntityID, Movement);
-            //// Movable component
-            //Movable.EntityID = this.EntityID;
-            //GB.dictMovable.Add(this.EntityID, Movable);
-
             //Character_Containers component
             Character_Containers.EntityID = this.EntityID;
             GB.dictCharacter_Containers.Add(this.EntityID, Character_Containers);
@@ -70,32 +55,12 @@ namespace appGameBoardTest.Entities
         public Player(Point3D Location, Brush B, Vector3D Vector, ref UInt32 nextEntityId, Game.GameBoard GB, String tmpName) :
             base(Location, B, Vector, ref nextEntityId, GB, tmpName)
         {
-            //this.EntityID = nextEntityId;
-            //nextEntityId++;
-            //// Movement component
-            //this.Movement = new Components.Movement(this.EntityID);
-            ////this.Movement.EntityID = this.EntityID;
-            //GB.dictMovement.Add(this.EntityID, Movement);
-            //// Movable component
-            //Movable.EntityID = this.EntityID;
-            //GB.dictMovable.Add(this.EntityID, Movable);
-
             //Character_Containers component
             Character_Containers.EntityID = this.EntityID;
             GB.dictCharacter_Containers.Add(this.EntityID, Character_Containers);
             //Character_Attributes component
             Character_Attributes.EntityID = this.EntityID;
             GB.dictCharacter_Attributes.Add(this.EntityID, Character_Attributes);
-
-            //EntityName = tmpName;  // Get nextEntityId and set name
-
-            //// Initialize Movement based on settings passed in
-            //Movement.Location = Location;
-            //Movement.Geometry = clsModels.GetGeo_98(new Point3D(Movement.Location.X, Movement.Location.Y,
-            //    Movement.Location.Z), B);
-            //Movement.Vector = Vector;
-
-            //GB.dictPlayer.Add(EntityID, this);
         }
     }
 

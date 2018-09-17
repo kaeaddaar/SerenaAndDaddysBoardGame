@@ -71,6 +71,8 @@ namespace appGameBoardTest.Game
         // queue to track movement requests
         Queue<Entities.Player> MovementQueue_ByBlock;
 
+        private Entities.Decisions decisions;
+
         public GameBoard()
         {
             cameraSetup();
@@ -79,6 +81,7 @@ namespace appGameBoardTest.Game
             // This is where I start adding stuff like the map and players
             lstTiles = clsSquareMaps.File_Main();   // Load the tile map from a file
 
+            decisions = new Entities.Decisions();
             loadEntities();                 // holds the calls to create the various entities of the game
             
             loadTileMapToModels();          // loops through lstTiles and adds the square geometries to myModel3DGroup
@@ -102,13 +105,51 @@ namespace appGameBoardTest.Game
             timer.Interval = TimeSpan.FromSeconds(.1);
             timer.Tick += timer_Tick;
             timer.Start();
-
+            
         } //GameBoard constructor
 
         void timer_Tick(object sender, EventArgs e)
         {
 
-            if (ticksSinceEnemyMove > (750 * 1000)) 
+            //if (ticksSinceEnemyMove > (750 * 1000)) 
+            //{
+            //    Vector3D directionToMario = new Vector3D
+            //    (
+            //        RedMan.Movement.Location.X - YellowMan2.Movement.Location.X,
+            //        RedMan.Movement.Location.Y - YellowMan2.Movement.Location.Y,
+            //        RedMan.Movement.Location.Z - YellowMan2.Movement.Location.Z
+            //    );
+            //    directionToMario.Normalize();
+            //    Vector3D DirectionToGo = new Vector3D();
+            //    if (directionToMario.X > 0.5)
+            //    {
+            //        DirectionToGo = Vector3D_Compass.East;
+            //    }
+            //    else if (directionToMario.X < -0.5)
+            //    {
+            //        DirectionToGo = Vector3D_Compass.West;
+            //    }
+            //    else if (directionToMario.Y > 0.5)
+            //    {
+            //        DirectionToGo = Vector3D_Compass.North;
+            //    }
+            //    else if (directionToMario.Y < -0.5)
+            //    {
+            //        DirectionToGo = Vector3D_Compass.South;
+            //    }
+
+            //    YellowMan2.Movement.Vector = DirectionToGo;
+            //    MovementQueue_ByBlock.Enqueue(YellowMan2);
+            //    ticksSinceEnemyMove = 0; // moved
+            //}
+
+            ticksSinceEnemyMove = ticksSinceEnemyMove + timer.RunGameLoop(watch, ProcessMovement);
+
+        }
+
+        int FollowPlayer()
+        {
+            if (ticksSinceEnemyMove > (750 * 1000))
             {
                 Vector3D directionToMario = new Vector3D
                 (
@@ -139,17 +180,16 @@ namespace appGameBoardTest.Game
                 MovementQueue_ByBlock.Enqueue(YellowMan2);
                 ticksSinceEnemyMove = 0; // moved
             }
-
-            ticksSinceEnemyMove = ticksSinceEnemyMove + timer.RunGameLoop(watch, ProcessMovement);
-
+            return 0;
         }
-
         int ProcessMovement()
         {
             foreach (var e in MovementQueue_ByBlock)
             {
                 Game.Movement.clsMovement.MoveEntity(ref e.Movement, ref e.Movable, this);
             }
+
+            decisions.LoadAvailableDecisions();
 
             return 0; // pass any int to fit Func<int> signature
         }
@@ -234,13 +274,16 @@ namespace appGameBoardTest.Game
             ImageBrush Elise_brush = new ImageBrush();
             Elise_brush.ImageSource = new BitmapImage(new Uri(@"..\..\Game\FunnyRedMushroom.jpg", UriKind.Relative));
 
-            // Create YellowMan<Player> entity
+            // Create YellowMan2<Player> entity
             YellowMan2 = new Entities.Player(new Point3D(3, 8, .1), Elise_brush, new Vector3D(0, 0, 0), ref nextEntityId, this, "YellowMan2");
             myModel3DEntities.Children.Add(YellowMan2.Movement.Geometry);
+            Entities.HasBeenLongEnough decision = new Entities.HasBeenLongEnough(750);
+            decision.SetActionToTake(FollowPlayer);
+            decisions.AddDecision(decision);
 
             //myModel3DEntities.Children.Remove(YellowMan2.Movement.Geometry);      // Testing removing some geometry. It works by index or object
 
-            // Create YellowMan<Player> entity
+            // Create YellowMan3<Player> entity
             YellowMan3 = new Entities.Player(new Point3D(2, 3, .1), Brushes.Yellow, new Vector3D(0, 0, 0), ref nextEntityId, this, "YellowMan3");
             myModel3DEntities.Children.Add(YellowMan3.Movement.Geometry);
 
