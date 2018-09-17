@@ -110,76 +110,52 @@ namespace appGameBoardTest.Game
 
         void timer_Tick(object sender, EventArgs e)
         {
-
-            //if (ticksSinceEnemyMove > (750 * 1000)) 
-            //{
-            //    Vector3D directionToMario = new Vector3D
-            //    (
-            //        RedMan.Movement.Location.X - YellowMan2.Movement.Location.X,
-            //        RedMan.Movement.Location.Y - YellowMan2.Movement.Location.Y,
-            //        RedMan.Movement.Location.Z - YellowMan2.Movement.Location.Z
-            //    );
-            //    directionToMario.Normalize();
-            //    Vector3D DirectionToGo = new Vector3D();
-            //    if (directionToMario.X > 0.5)
-            //    {
-            //        DirectionToGo = Vector3D_Compass.East;
-            //    }
-            //    else if (directionToMario.X < -0.5)
-            //    {
-            //        DirectionToGo = Vector3D_Compass.West;
-            //    }
-            //    else if (directionToMario.Y > 0.5)
-            //    {
-            //        DirectionToGo = Vector3D_Compass.North;
-            //    }
-            //    else if (directionToMario.Y < -0.5)
-            //    {
-            //        DirectionToGo = Vector3D_Compass.South;
-            //    }
-
-            //    YellowMan2.Movement.Vector = DirectionToGo;
-            //    MovementQueue_ByBlock.Enqueue(YellowMan2);
-            //    ticksSinceEnemyMove = 0; // moved
-            //}
-
             ticksSinceEnemyMove = ticksSinceEnemyMove + timer.RunGameLoop(watch, ProcessMovement);
-
         }
 
-        int FollowPlayer()
+        Func<int> CreateFunctionToFollowPlayer(Entities.Player PlayerFollowingAnother)
         {
-            if (ticksSinceEnemyMove > (750 * 1000))
+            Func<int> f = () =>
             {
-                Vector3D directionToMario = new Vector3D
-                (
-                    RedMan.Movement.Location.X - YellowMan2.Movement.Location.X,
-                    RedMan.Movement.Location.Y - YellowMan2.Movement.Location.Y,
-                    RedMan.Movement.Location.Z - YellowMan2.Movement.Location.Z
-                );
-                directionToMario.Normalize();
-                Vector3D DirectionToGo = new Vector3D();
-                if (directionToMario.X > 0.5)
-                {
-                    DirectionToGo = Vector3D_Compass.East;
-                }
-                else if (directionToMario.X < -0.5)
-                {
-                    DirectionToGo = Vector3D_Compass.West;
-                }
-                else if (directionToMario.Y > 0.5)
-                {
-                    DirectionToGo = Vector3D_Compass.North;
-                }
-                else if (directionToMario.Y < -0.5)
-                {
-                    DirectionToGo = Vector3D_Compass.South;
-                }
+                return FollowPlayer(PlayerFollowingAnother, RedMan);
+            };
 
-                YellowMan2.Movement.Vector = DirectionToGo;
-                MovementQueue_ByBlock.Enqueue(YellowMan2);
-                ticksSinceEnemyMove = 0; // moved
+            return f;
+        }
+
+        int FollowPlayer(Entities.Player PlayerFollowingAnother, Entities.Player PlayerBeingFollowed)
+        {
+            Entities.Player Followed = PlayerBeingFollowed;
+            Entities.Player Following = PlayerFollowingAnother;
+
+            Vector3D directionToMario = new Vector3D
+            (
+                Followed.Movement.Location.X - Following.Movement.Location.X,
+                Followed.Movement.Location.Y - Following.Movement.Location.Y,
+                Followed.Movement.Location.Z - Following.Movement.Location.Z
+            );
+            directionToMario.Normalize();
+            Vector3D DirectionToGo = new Vector3D();
+            if (directionToMario.X > 0.5)
+            {
+                DirectionToGo = Vector3D_Compass.East;
             }
+            else if (directionToMario.X < -0.5)
+            {
+                DirectionToGo = Vector3D_Compass.West;
+            }
+            else if (directionToMario.Y > 0.5)
+            {
+                DirectionToGo = Vector3D_Compass.North;
+            }
+            else if (directionToMario.Y < -0.5)
+            {
+                DirectionToGo = Vector3D_Compass.South;
+            }
+
+            Following.Movement.Vector = DirectionToGo;
+            MovementQueue_ByBlock.Enqueue(Following);
+
             return 0;
         }
         int ProcessMovement()
@@ -234,12 +210,23 @@ namespace appGameBoardTest.Game
                             }
                         }
                         
-                        Entities.Player tmpPlayer = new Entities.Player(new Point3D(hitgeo.Bounds.X, hitgeo.Bounds.Y, hitgeo.Bounds.Z + .1), B, new Vector3D(0, 0, 0), ref nextEntityId, this, "YellowMan1");
+                        Entities.Player tmpPlayer = new Entities.Player
+                        (
+                            new Point3D(hitgeo.Bounds.X, hitgeo.Bounds.Y, hitgeo.Bounds.Z + .1), 
+                            B, 
+                            new Vector3D(0, 0, 0), 
+                            ref nextEntityId, 
+                            this, 
+                            "YellowMan1"
+                        );
                         myModel3DEntities.Children.Add(tmpPlayer.Movement.Geometry);
 
                         if (dictCustomPlayerGroups["SpaceRocks"] != null )
                         {
                             dictCustomPlayerGroups["SpaceRocks"].Add(tmpPlayer);
+                            Entities.HasBeenLongEnough decision = new Entities.HasBeenLongEnough(750);
+                            decision.SetActionToTake(CreateFunctionToFollowPlayer(tmpPlayer));
+                            decisions.AddDecision(decision);
                         }
 
                     }
@@ -278,7 +265,7 @@ namespace appGameBoardTest.Game
             YellowMan2 = new Entities.Player(new Point3D(3, 8, .1), Elise_brush, new Vector3D(0, 0, 0), ref nextEntityId, this, "YellowMan2");
             myModel3DEntities.Children.Add(YellowMan2.Movement.Geometry);
             Entities.HasBeenLongEnough decision = new Entities.HasBeenLongEnough(750);
-            decision.SetActionToTake(FollowPlayer);
+            decision.SetActionToTake(CreateFunctionToFollowPlayer(YellowMan2));
             decisions.AddDecision(decision);
 
             //myModel3DEntities.Children.Remove(YellowMan2.Movement.Geometry);      // Testing removing some geometry. It works by index or object
