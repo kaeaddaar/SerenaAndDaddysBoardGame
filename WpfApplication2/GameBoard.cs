@@ -61,8 +61,6 @@ namespace appGameBoardTest.Game
         Entities.BaseEntity Block;
 
         public UInt32 nextEntityId = 1;        // Public so that move routines work
-        //Window2 winInfo = new Window2();
-        //public Game.UserInerface.GBInfo GB_Info;
         public GeometryModel3D GeoMove;
 
         // used in game loop
@@ -95,10 +93,6 @@ namespace appGameBoardTest.Game
             myViewport3D.Children.Add(myModelVisual3D);
             dictCustomPlayerGroups.Add("SpaceRocks", new List<Entities.Player>());
 
-            //GB_Info = new UserInerface.GBInfo(winInfo);
-            //setup_info_window();
-            //updateGBInfo();
-
             MovementQueue_ByBlock = new Queue<Entities.Player>();
             ticksSinceEnemyMove = 0;
 
@@ -128,15 +122,15 @@ namespace appGameBoardTest.Game
                 {
                     DirectionToGo = Vector3D_Compass.East;
                 }
-                if (directionToMario.X < -0.5)
+                else if (directionToMario.X < -0.5)
                 {
                     DirectionToGo = Vector3D_Compass.West;
                 }
-                if (directionToMario.Y > 0.5)
+                else if (directionToMario.Y > 0.5)
                 {
                     DirectionToGo = Vector3D_Compass.North;
                 }
-                if (directionToMario.Y < -0.5)
+                else if (directionToMario.Y < -0.5)
                 {
                     DirectionToGo = Vector3D_Compass.South;
                 }

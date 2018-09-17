@@ -9,10 +9,6 @@ using System.Windows.Media;             // For using Brush
 
 namespace appGameBoardTest.Entities
 {
-    class clsEntities
-    {
-    }
-    
 
     public class Player
     {
@@ -110,7 +106,7 @@ namespace appGameBoardTest.Entities
 
         public Components.Movement Movement;
         public Components.Movable Movable = new Components.Movable();
-        
+
         public BaseEntity(ref UInt32 nextEntityId, Game.GameBoard GB)
         {
             this.EntityID = nextEntityId;
@@ -130,7 +126,7 @@ namespace appGameBoardTest.Entities
             nextEntityId++;
             // Movement component
             this.Movement = new Components.Movement(this.EntityID);
-//            Movement.EntityID = this.EntityID;
+            //            Movement.EntityID = this.EntityID;
             GB.dictMovement.Add(this.EntityID, Movement);
             // Movable component
             Movable.EntityID = this.EntityID;
@@ -143,22 +139,9 @@ namespace appGameBoardTest.Entities
             Movement.Geometry = clsModels.GetGeo_98(new Point3D(Movement.Location.X, Movement.Location.Y,
                 Movement.Location.Z), B);
             Movement.Vector = Vector;
- 
+
             GB.dictBox.Add(EntityID, this);
         }
     }
-
-/*
-    public class Fuzzle : BaseEntity
-    {
-        double seeDistance = 7.5;
-        
-        public bool canSee(Player P)
-        {
-            //Create a geometry that connects the player with this enemy
-
-        }
-    }
- */
 
 }

@@ -146,16 +146,4 @@ namespace appGameBoardTest.Components
         public double Wizdom;
     } //Character_Attributes
 
-    public class Senses     // Not sure how we are going to get this working, might not even use this component
-    {
-        List<Tile> SightTiles;
-        List<Tile> SoundTiles;
-        List<Tile> TouchTiles;
-        List<Tile> TasteTiles;
-        List<Tile> SmellTiles;
-
-        Dictionary<UInt32, Entities.Player> dictPlayer;
-        Dictionary<UInt32, Entities.BaseEntity> dictBox;
-    } //Senses
-
 }
