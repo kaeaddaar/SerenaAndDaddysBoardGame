@@ -87,7 +87,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Extensions\DispatchTimerExtensions.cs" />
-    <Compile Include="Extensions\PlayerExtensions.cs" />
     <Compile Include="Game\MathHelper\MathAssist.cs" />
     <Compile Include="Resource1.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -9,14 +9,8 @@ using System.Windows.Media;             // For using Brush
 
 namespace appGameBoardTest.Entities
 {
-    public interface IPlayer : IBaseEntity
-    {
-        Components.Character_Containers Character_Containers { get; set; }
-        Components.Character_Attributes Character_Attributes { get; set; }
-        void doMove();
-    }
 
-    public class Player : BaseEntity, IPlayer
+    public class Player : BaseEntity
     {
         //public UInt32 EntityID;
         //public String EntityName;
@@ -25,8 +19,8 @@ namespace appGameBoardTest.Entities
         //public Components.Movement Movement;
         //public Components.Movable Movable = new Components.Movable();
 
-        public Components.Character_Containers Character_Containers { get; set; }
-        public Components.Character_Attributes Character_Attributes { get; set; }
+        public Components.Character_Containers Character_Containers = new Components.Character_Containers();
+        public Components.Character_Attributes Character_Attributes = new Components.Character_Attributes();
 
         public void doMove()
         {
@@ -63,8 +57,6 @@ namespace appGameBoardTest.Entities
             //// Movable component
             //Movable.EntityID = this.EntityID;
             //GB.dictMovable.Add(this.EntityID, Movable);
-            Character_Containers = new Components.Character_Containers();
-            Character_Attributes = new Components.Character_Attributes();
 
             //Character_Containers component
             Character_Containers.EntityID = this.EntityID;
@@ -88,9 +80,6 @@ namespace appGameBoardTest.Entities
             //Movable.EntityID = this.EntityID;
             //GB.dictMovable.Add(this.EntityID, Movable);
 
-            Character_Containers = new Components.Character_Containers();
-            Character_Attributes = new Components.Character_Attributes();
-
             //Character_Containers component
             Character_Containers.EntityID = this.EntityID;
             GB.dictCharacter_Containers.Add(this.EntityID, Character_Containers);
@@ -110,22 +99,15 @@ namespace appGameBoardTest.Entities
         }
     }
 
-    public interface IBaseEntity
-    {
-        UInt32 EntityID { get; set; }
-        String EntityName { get; set; }
-        Components.Movement Movement { get; set; }
-        Components.Movable Movable { get; }
-    }
 
-    public class BaseEntity : IBaseEntity
+    public class BaseEntity
     {
-        public UInt32 EntityID { get; set; }
-        public String EntityName { get; set; }
-        public appGameBoardTest.Game.GameBoard GB { get; set; }
+        public UInt32 EntityID;
+        public String EntityName;
+        public appGameBoardTest.Game.GameBoard GB;
 
-        public Components.Movement Movement { get; set; }
-        public Components.Movable Movable => new Components.Movable();
+        public Components.Movement Movement;
+        public Components.Movable Movable = new Components.Movable();
 
         public BaseEntity(ref UInt32 nextEntityId, Game.GameBoard GB)
         {
