@@ -105,8 +105,20 @@ namespace appGameBoardTest.Game
             timer.Interval = TimeSpan.FromSeconds(.1);
             timer.Tick += timer_Tick;
             timer.Start();
-            
+
+            //LoopTimer Loop = new LoopTimer(timer_Tick);
         } //GameBoard constructor
+
+        public class LoopTimer
+        {
+            DispatcherTimer _timer;
+            public LoopTimer(EventHandler timer_Tick)
+            {
+                _timer = new DispatcherTimer();
+                _timer.Interval = TimeSpan.FromSeconds(.1);
+                _timer.Tick += timer_Tick;
+            }
+        }
 
         void timer_Tick(object sender, EventArgs e)
         {

@@ -53,10 +53,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>9A6F892AC45F3FEBD4E8B3606E2F978692AD8A74</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>F48D4E9A66367AC27CC1B3629CA9E2E307DFFF9A</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>GameBoardTest_5_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>GameBoardTest_7_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -142,6 +142,7 @@
     <None Include="GameBoardTest_3_TemporaryKey.pfx" />
     <None Include="GameBoardTest_4_TemporaryKey.pfx" />
     <None Include="GameBoardTest_5_TemporaryKey.pfx" />
+    <None Include="GameBoardTest_7_TemporaryKey.pfx" />
     <None Include="GameBoardTest_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
